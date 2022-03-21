@@ -22,6 +22,8 @@ typedef struct {
     bool done;
 } todo_item_t;
 
+#define todo_item_empty ((todo_item_t){.done = false, .text = calloc(1,1) })
+
 DA_TYPEDEF(todo_item_t, todo_list);
 
 typedef struct {
@@ -54,6 +56,24 @@ void print_todos(todo_list *list, vec_t startPos)
         printw_at(startPos, "[%c] %s", list->p[i].done ? DONE_CHAR : ' ', list->p[i].text);
         startPos.row++;
     }
+}
+
+todo_list *create_demo_list()
+{
+    todo_list *list = malloc(sizeof(todo_list));
+    da_init(*list);
+    todo_item_t demo_item = { .done = false, .text = malloc(5) };
+
+    // yikes
+    demo_item.text[0] = 'd';
+    demo_item.text[1] = 'e';
+    demo_item.text[2] = 'm';
+    demo_item.text[3] = 'o';
+    demo_item.text[4] = '\0'; 
+
+    da_push(*list, demo_item);
+
+    return list;
 }
 
 todo_list *read_list_from_file(const char *filename)
@@ -144,13 +164,9 @@ void cursor_back()
 
 int main(int argc, char **argv)
 {
-    if (argc != 2)
-    {
-        fprintf(stderr, "No path specified\n");
-        return EXIT_FAILURE;
-    }
+    char* path = argc == 1 ? "./todofile" : argv[1];
+    todo_list *list = argc == 1 ? create_demo_list() : read_list_from_file(path);
 
-    todo_list *list = read_list_from_file(argv[1]);
     if (list == NULL)
         return EXIT_FAILURE;
 
@@ -183,11 +199,18 @@ int main(int argc, char **argv)
 
             case 'd':
                 if (da_count(*list))
+                {
                     da_delete(*list, selected_todo);
+                    if (!selected_todo)
+                        da_push(*list, todo_item_empty);
+
+                    if (selected_todo >= 1)
+                        selected_todo--;
+                }
                 break;
 
             case 'a':
-                todo_item_t newItem = {.done = false, .text = calloc(1,1) };
+                todo_item_t newItem = todo_item_empty;
                 da_push(*list, newItem);
                 selected_todo = da_count(*list) - 1;
                 break;
@@ -196,9 +219,9 @@ int main(int argc, char **argv)
 
         clear();
 
-        printw_at(vec_origin, "\t-- TODO --");        
+        printw_at(vec_origin, "\t-- TODO --");
 
-        print_todos(list, (vec_t){ .row=1, .col=0 });
+        print_todos(list, (vec_t){ .row = 1, .col = 0 });
 
         cursor.row = selected_todo + 1;
         cursor.col = 1;
@@ -245,7 +268,7 @@ int main(int argc, char **argv)
 
     endwin();
 
-    save_list_to_file(argv[1], list);
+    save_list_to_file(path, list);
 
     free_todolist(list);
 
