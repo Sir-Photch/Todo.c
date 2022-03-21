@@ -1,6 +1,16 @@
 {
     "files.associations": {
         "stdio.h": "c",
-        "ncurses.h": "c"
+        "ncurses.h": "c",
+        "bit": "c",
+        "*.tcc": "c",
+        "random": "c",
+        "functional": "c",
+        "istream": "c",
+        "limits": "c",
+        "ostream": "c",
+        "sstream": "c",
+        "streambuf": "c",
+        "tuple": "c"
     }
 }
