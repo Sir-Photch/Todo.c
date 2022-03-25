@@ -1,6 +1,6 @@
-# todo-applet
+# Todo.c
 
-Inspired by rexims todo-rs
+Todo-applet inspired by rexims todo-rs
 
 `but in C!`
 
@@ -32,3 +32,7 @@ Opens up `todofile` and reads its contents. If it does not exist, it is created 
 | <kbd>d</kbd> | remove selected item |
 | <kbd>i</kbd> | enter insert mode, exit with <kbd>Enter</kbd> |
 | <kbd>q</kbd> | quit |
+
+## thankfully depends on these public-domain libs:
+- [pdcurses](https://github.com/wmcbrine/PDCurses)
+- [DG_dynarr.h](https://github.com/nothings/single_file_libs)
