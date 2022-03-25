@@ -1,6 +1,6 @@
 # todo-applet
-## (kinda) similar to rexim's todo-rs
 
+Inspired by rexims todo-rs
 but in C!
 
 ## usage
