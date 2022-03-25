@@ -4,7 +4,18 @@ Inspired by rexims todo-rs
 
 `but in C!`
 
+## build
+```console
+$ make release
+```
+
 ## usage
+
+```console
+$ ./todo <todofile>
+```
+Opens up `todofile` and reads its contents. If it does not exist, it is created after exiting. If no file is specified, it defaults to `./todofile`.
+
 | key | description |
 | --- | --- |
 | <kbd>j</kbd> | move downwards |
@@ -13,3 +24,4 @@ Inspired by rexims todo-rs
 | <kbd>a</kbd> | add item |
 | <kbd>d</kbd> | remove selected item |
 | <kbd>i</kbd> | enter insert mode, exit with <kbd>Enter</kbd> |
+| <kbd>q</kbd> | quit |
