@@ -1,7 +1,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include <ncurses.h>
+
+#ifdef WIN32
+    #include "curses.h"
+#elif __linux__
+    #include <ncurses.h>
+#endif
+
+
 #include <assert.h>
 #include <errno.h>
 #include <string.h>
@@ -204,7 +211,7 @@ int main(int argc, char **argv)
                 }
                 break;
 
-            case 'a':
+            case 'a':;
                 todo_item_t newItem = { .done=false, .text=strdup(" ") };
                 da_push(*list, newItem);
                 selected_todo = da_count(*list) - 1;
