@@ -1,7 +1,8 @@
 # todo-applet
 
 Inspired by rexims todo-rs
-but in C!
+
+`but in C!`
 
 ## usage
 | key | description |
