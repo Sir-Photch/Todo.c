@@ -5,6 +5,7 @@
 #include <assert.h>
 #include <errno.h>
 #include <string.h>
+#include <unistd.h>
 
 #define DG_DYNARR_IMPLEMENTATION
 #include "DG_dynarr.h"
@@ -21,8 +22,6 @@ typedef struct {
     char* text;
     bool done;
 } todo_item_t;
-
-#define todo_item_empty ((todo_item_t){.done = false, .text = calloc(1,1) })
 
 DA_TYPEDEF(todo_item_t, todo_list);
 
@@ -62,14 +61,7 @@ todo_list *create_demo_list()
 {
     todo_list *list = malloc(sizeof(todo_list));
     da_init(*list);
-    todo_item_t demo_item = { .done = false, .text = malloc(5) };
-
-    // yikes
-    demo_item.text[0] = 'd';
-    demo_item.text[1] = 'e';
-    demo_item.text[2] = 'm';
-    demo_item.text[3] = 'o';
-    demo_item.text[4] = '\0'; 
+    todo_item_t demo_item = { .done = false, .text = strdup("demo") };
 
     da_push(*list, demo_item);
 
@@ -165,7 +157,10 @@ void cursor_back()
 int main(int argc, char **argv)
 {
     char* path = argc == 1 ? "./todofile" : argv[1];
-    todo_list *list = argc == 1 ? create_demo_list() : read_list_from_file(path);
+
+    todo_list *list = access(path, R_OK | W_OK) 
+                    ? create_demo_list() 
+                    : read_list_from_file(path);
 
     if (list == NULL)
         return EXIT_FAILURE;
@@ -202,7 +197,7 @@ int main(int argc, char **argv)
                 {
                     da_delete(*list, selected_todo);
                     if (!selected_todo)
-                        da_push(*list, todo_item_empty);
+                        da_push(*list, ((todo_item_t){.done=false, .text=strdup(" ")}));
 
                     if (selected_todo >= 1)
                         selected_todo--;
@@ -210,11 +205,10 @@ int main(int argc, char **argv)
                 break;
 
             case 'a':
-                todo_item_t newItem = todo_item_empty;
+                todo_item_t newItem = { .done=false, .text=strdup(" ") };
                 da_push(*list, newItem);
                 selected_todo = da_count(*list) - 1;
-                break;
-                
+                break;                
         }    
 
         clear();
@@ -231,31 +225,15 @@ int main(int argc, char **argv)
             move_cursor((vec_t){ .row = selected_todo + 1, .col = 4 });
             echo();
             char buffer[TODO_MAXLENGTH];
-            size_t i = 0;
-            while (i < TODO_MAXLENGTH - 1)
-            {
-                char c = getch();
+            memset(buffer, 0, TODO_MAXLENGTH);
 
-                // THIS DOES NOTHING!!!!!!!!!!!
-                switch (c)
-                {
-                    case '\x1B':
-                        cursor_back();
-                        goto _end_read;
-                    case '\x08':
-                        move(getcury(stdscr), getcurx(stdscr) - 1);
-                        cursor_back();
-                        continue;
-                }
-                
-                buffer[i++] = c;
-            }
-        _end_read:
-            buffer[i] = '\0'; // replace escape-char with zero
+            getnstr(buffer, TODO_MAXLENGTH);
 
             free(list->p[selected_todo].text);
-            list->p[selected_todo].text = malloc(i);
-            memcpy(list->p[selected_todo].text, buffer, i);
+            size_t textlen = strnlen(buffer, TODO_MAXLENGTH);
+
+            list->p[selected_todo].text = malloc(textlen);
+            memcpy(list->p[selected_todo].text, buffer, textlen);
             noecho();
             insert_mode = false;
         }
