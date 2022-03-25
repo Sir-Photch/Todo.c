@@ -1,6 +1,6 @@
 # Todo.c
 
-Todo-applet inspired by rexims todo-rs
+Todo-applet inspired by tsoding's todo-rs
 
 `but in C!`
 
