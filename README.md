@@ -35,4 +35,4 @@ Opens up `todofile` and reads its contents. If it does not exist, it is created 
 
 ## thankfully depends on these public-domain libs:
 - [pdcurses](https://github.com/wmcbrine/PDCurses)
-- [DG_dynarr.h](https://github.com/nothings/single_file_libs)
+- [DG_dynarr.h](https://github.com/DanielGibson/Snippets)
