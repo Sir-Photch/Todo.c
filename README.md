@@ -5,9 +5,16 @@ Inspired by rexims todo-rs
 `but in C!`
 
 ## build
+### Linux:
 ```console
 $ make release
 ```
+### Windows (Experimental??):
+Assuming `mingw` is installed.
+```
+$ make windows
+```
+All dependencies are included. Notice that for windows, `todo.exe` depends on `pdcurses.dll`.
 
 ## usage
 
