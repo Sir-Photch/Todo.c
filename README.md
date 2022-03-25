@@ -9,7 +9,7 @@ Todo-applet inspired by rexims todo-rs
 ```console
 $ make release
 ```
-### Windows (Even more experimental):
+### Windows (Even more experimental ??? ):
 Assuming `mingw` is installed.
 ```
 $ make windows
