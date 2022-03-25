@@ -9,3 +9,6 @@ debug:
 release:
 	$(CC) $(SRC) $(FLAGS) -Ofast -lncurses -o $(OUT)
 
+windows:
+	$(CC) $(SRC) libpdcurses.a $(FLAGS) -Ofast -o $(OUT)
+
