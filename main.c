@@ -2,10 +2,12 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-#ifdef WIN32
+#ifdef _WIN32
     #include "curses.h"
 #elif __linux__
     #include <ncurses.h>
+#else
+    #error unknown platform!
 #endif
 
 #include <assert.h>

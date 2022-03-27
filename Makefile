@@ -13,4 +13,4 @@ windows:
 	$(CC) $(SRC) libpdcurses.a $(FLAGS) -Ofast -o $(OUT)
 
 clean:
-	rm ./todo ./todofile
+	rm ./todo ./todofile ./todofile.exe
