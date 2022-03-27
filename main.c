@@ -194,7 +194,7 @@ int main(int argc, char **argv)
                 if (da_count(*list))
                 {
                     da_delete(*list, selected_todo);
-                    if (!selected_todo)
+                    if (!selected_todo && da_count(*list) == 0)
                         da_push(*list, ((todo_item_t){.done=false, .text=strdup(" ")}));
 
                     if (selected_todo >= 1)
