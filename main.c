@@ -8,7 +8,6 @@
     #include <ncurses.h>
 #endif
 
-
 #include <assert.h>
 #include <errno.h>
 #include <string.h>
@@ -100,20 +99,14 @@ todo_list *read_list_from_file(const char *filename)
         memcpy(state, buffer, delimiterIndex - 1);
         state[delimiterIndex - 1] = '\0';
 
-        size_t textLen = strlen(&buffer[delimiterIndex]);
-        char *message = malloc(textLen - 1); // exclude '\n'
-        memcpy(message, &buffer[delimiterIndex], textLen - 1);
+        char *message = strdup(&buffer[delimiterIndex]);
+        message[strcspn(message, "\n")] = 0;
 
         todo_item_t item = { .text = message };
-        
-        if (0 == strncmp("TODO", state, TODO_MAXLENGTH))
-        {
-            item.done = false;
-        }
-        else // default to done
-        {
-            item.done = true;
-        }
+
+        item.done = strncmp("TODO", state, TODO_MAXLENGTH);
+
+        memset(buffer, 0, TODO_MAXLENGTH);
 
         da_push(*list, item);
     }
@@ -237,10 +230,8 @@ int main(int argc, char **argv)
             getnstr(buffer, TODO_MAXLENGTH);
 
             free(list->p[selected_todo].text);
-            size_t textlen = strnlen(buffer, TODO_MAXLENGTH);
 
-            list->p[selected_todo].text = malloc(textlen);
-            memcpy(list->p[selected_todo].text, buffer, textlen);
+            list->p[selected_todo].text = strdup(buffer);
             noecho();
             insert_mode = false;
         }
