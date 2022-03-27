@@ -18,10 +18,6 @@
 
 #define DONE_CHAR 'X'
 
-#define TODO_SIZE   3
-#define TODO_COLS   2
-#define COLWIDTH    30
-
 #define TODO_MAXLENGTH 261 // 256 + 5 for (TODO|)
 
 typedef struct {
