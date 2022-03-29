@@ -144,14 +144,6 @@ void free_todolist(todo_list *list)
     free(list);
 }
 
-void cursor_back()
-{
-    int y = getcury(stdscr),
-        x = getcurx(stdscr);
-    mvaddch(y, x - 1, ' ');
-    move(y, x - 2);
-}
-
 int main(int argc, char **argv)
 {
     char* path = argc == 1 ? "./todofile" : argv[1];
